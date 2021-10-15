@@ -1,14 +1,27 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/notes">
+        <b-button size="is-medium" rounded class="nav-button"
+          >Notes</b-button
+        ></router-link
+      >
+      <router-link to="/addnote">
+        <b-button size="is-medium" rounded class="nav-button"
+          >+ add note</b-button
+        ></router-link
+      >
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <style>
+body {
+  background-color: #0073ff;
+  height: 100vh;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -19,6 +32,10 @@
 
 #nav {
   padding: 30px;
+}
+
+.nav-button {
+  margin: 20px;
 }
 
 #nav a {

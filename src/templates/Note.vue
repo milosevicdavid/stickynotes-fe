@@ -43,7 +43,7 @@
           ></div>
         </div>
         <div class="confirm-buttons">
-          <b-button @click="addNote" class="buttons" type="is-dark"
+          <b-button @click="editNote" class="buttons" type="is-dark"
             >Save</b-button
           >
           <b-button @click="cancelEdit" class="buttons" type="is-dark"
@@ -61,21 +61,24 @@ import { animate } from "motion";
 export default {
   data() {
     return {
-      note: {
-        title: "",
-        content: "",
-        color: ""
-      }
+      note: {}
     };
+  },
+  mounted() {
+    const { id } = this.$route.params;
+    fetch(`http://localhost:8000/${id}`)
+      .then(response => response.json())
+      .then(data => (this.note = data));
   },
 
   methods: {
-    addNote() {
+    editNote() {
       if (this.note.title === "") {
         this.$buefy.dialog.alert("You cannot confirm note without a title");
       } else {
-        fetch("http://localhost:8000/", {
-          method: "POST",
+        const { id } = this.$route.params;
+        fetch(`http://localhost:8000/${id}`, {
+          method: "PUT",
           body: JSON.stringify(this.note)
         }).then(() => this.$router.push("/notes"));
       }
@@ -94,10 +97,14 @@ export default {
         }
       }
       if (this.note.color === color) {
-        animate(`.${color}`, { scale: 1.3 }, { duration: 0.5 });
+        animate(`.${color}`, { transform: "rotate(45deg)" }, { duration: 0.5 });
       }
       for (let j = 0; j < otherArray.length; j++) {
-        animate(`.${otherArray[j]}`, { scale: 1 }, { duration: 0.5 });
+        animate(
+          `.${otherArray[j]}`,
+          { transform: "rotate(0deg)" },
+          { duration: 0.5 }
+        );
       }
     }
   }
@@ -146,10 +153,6 @@ export default {
 
 .model {
   width: 800px;
-}
-
-.is-default {
-  background-color: #4a4a4a;
 }
 
 .is-danger {
